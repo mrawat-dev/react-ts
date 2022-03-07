@@ -4,24 +4,27 @@ import moment from 'moment';
 
 import { Deal } from "../model";
 
-export function makeServer({ environment = "dev" }) {
+export function makeServer() {
   return createServer({
-    environment,
+    seeds(server) {
+      server.createList("deal", 10);
+    },
+
     factories: {
       deal: Factory.extend<Partial<Deal>>({
-        get id() {
+        id() {
           return faker.datatype.uuid();
         },
-        get name() {
+        name() {
           return faker.name.findName(faker.name.firstName(), faker.name.lastName());
         },
-        get amount() {
+        amount() {
           return +faker.finance.amount();
         },
-        get stage() {
+        stage() {
           return Math.ceil(Math.random() * (3 - 1) + 1);
         },
-        get created_at() {
+        created_at() {
           return moment();
         },
       }),
@@ -34,10 +37,6 @@ export function makeServer({ environment = "dev" }) {
     routes() {
       this.namespace = "api";
       this.get("deals");
-    },
-
-    seeds(server) {
-      server.createList("deal", 10);
     },
   });
 }

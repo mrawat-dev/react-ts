@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import useSWR from "swr";
 
 import DealTable from './Table';
